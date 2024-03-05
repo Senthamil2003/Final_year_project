@@ -1,0 +1,30 @@
+.left{
+  text-align-last:left;
+  margin-left: 2%;
+  max-width: 350px;
+  background-color: rgb(207, 160, 98);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  word-wrap: break-word;
+  
+}
+.right1{
+   text-align-last:right;
+   margin-right:2%;
+   background-color: rgb(208, 160, 98);
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 50px;
+  display: inline-block;
+  word-wrap: break-word;
+  float: right;
+   
+   
+
+   
+}
+body{
+  background-color: rgb(224, 218, 210);
+}

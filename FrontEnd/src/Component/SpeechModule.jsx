@@ -2,33 +2,32 @@ import React, { useEffect, useState, useRef  } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from "axios";
 import { useSpeechSynthesis } from 'react-speech-kit';
+import Report from './Report';
 
 export default function SpeechModule() {    
     
     const prompt = "hi i am going to give you the entire conversation i am user and you are the assistant and give the answer for the last user's question and give response if you need you can also use the previous conversation as reference.Hey you should act as an interviewer and ask questions on the topics data structures  easy level. You should ask only one question at a time and ask the next question only after the user answers the first question dont give answer for the question in the middle of the interview.more importantly dont give the answer as (user:some answer) in middle of interview it is strictly prohibited.and act more like interviewer by giveing some casual terms and opinion(not answer).I will also provide the entire conversation, you can use them as reference to avoid asking same questions, count the number of questions you have asked and the remaining number of questions or to ask questions from the previous answer. You should ask a total of 5 questions,exact five questions must be asked no extra questions are allowed. and add the question number in the begining. Finally you should analyse the response and provide a score out of 10 for the interviewee. Your first response should be your first interview question and once user responds then i will be giving the conversation again for your reference and using it you can ask further questions.";
     const [data, setData] = useState([]);
-    const [count, setCount] = useState(0);
-    const [value,setvalue]=useState("");
+    const [count, setCount] = useState(8);
+    const [value,setvalue]=useState();
     const [write,setwrite]=useState("");
     const [isloading,setisloading]=useState(false);
     const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition();
     const { speak } = useSpeechSynthesis();
     const reportRef = useRef(null);
-    
-  const handlePrint = () => {
-    if (reportRef.current) {
-      window.print();
-    }
-  };
-  const handleEnterPress = (event) => {
+    const id=localStorage.getItem("id");
+ 
+    const handleEnterPress = (event) => {
     if (event.key === 'Enter' && !isloading) {
       submit();
     }
   };
-
+  
     useEffect(()=>{
        setwrite(transcript)
-    },[transcript])
+    },[transcript]);
+
+  
     
     const submit = async () => {
              
@@ -60,23 +59,21 @@ export default function SpeechModule() {
         return <span>Browser doesn't support speech recognition.</span>;
     }
     else if (count>10){
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f2f2f2' }}>
-        <div ref={reportRef} style={{ textAlign: 'center', padding: '40px', border: '1px solid #ccc', borderRadius: '10px', maxWidth: '600px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff' }}>
-          <h1 style={{ color: '#007bff', fontSize: '36px', marginBottom: '30px' }}>Report Page</h1>
-          <div style={{ padding: '20px', borderRadius: '10px', marginBottom: '30px', backgroundColor: '#f0f0f0', lineHeight: '1.5' }}>
-          
-              <p style={{ color: '#666', fontSize: '20px', margin: '5px 0' }}>{data[11]}</p>
-          
-          </div>
-          <button style={{ background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '18px', marginRight: '10px' }} onClick={handlePrint}>
-            Print Report
-          </button>
-          <button style={{ background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '18px' }}>
-            Go back home
-          </button>
-        </div>
-      </div>
+      const id=localStorage.getItem("id");
+      const reportdata=data.join("")+"give the feedback based on the given conversation for the user and give points out of 100 based on the correctness of the answer for the question"
+      axios.post("http://localhost:5000/addreport",{
+        id:id,
+        input:reportdata
+      }
+    ).then((response) => {
+         setvalue(response.data);
+        
+        
+      }).catch((msg)=>{
+        console.log(msg)
+      })
+    if(value) return (
+     <Report item={value}/>
     );
   }
     

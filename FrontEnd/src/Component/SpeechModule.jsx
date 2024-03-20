@@ -59,21 +59,9 @@ export default function SpeechModule() {
         return <span>Browser doesn't support speech recognition.</span>;
     }
     else if (count>10){
-      const id=localStorage.getItem("id");
-      const reportdata=data.join("")+"give the feedback based on the given conversation for the user and give points out of 100 based on the correctness of the answer for the question"
-      axios.post("http://localhost:5000/addreport",{
-        id:id,
-        input:reportdata
-      }
-    ).then((response) => {
-         setvalue(response.data);
-        
-        
-      }).catch((msg)=>{
-        console.log(msg)
-      })
-    if(value) return (
-     <Report item={value}/>
+    
+     return (
+     <Report item={data}/>
     );
   }
     

@@ -11,7 +11,7 @@ import Report from './Component/Report';
 
 export const NameContext = createContext();
 const NameContextProvider = ({ children }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(["-"]);
 
   return (
       <NameContext.Provider value={{ name, setName }}>

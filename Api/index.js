@@ -8,6 +8,8 @@ app.use(CORS());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended : true}));
 const { Configuration, OpenAIApi } = require("openai");
+let isProcessing = false;
+
 const openAi = new OpenAIApi(
   new Configuration({
     apiKey: process.env.OPEN_AI_API_KEY,
@@ -64,34 +66,37 @@ app.post("/login", async(req,res)=>{
   }
   
 })
-app.post("/addReport", async(req,res)=>{
-  const { input,id } = req.body;
-  
-  try{
-    const response = await openAi.createChatCompletion({
-      model: "gpt-3.5-turbo",
-  
-      messages: [{ role: "user", content: input }],
-    })
-   
-    console.log("start") 
-    const items = await db.promise().query("insert into report (userid,report) values(?,?)", [id,response.data.choices[0].message.content]);
-    console.log("success");
-    res.json(response.data.choices[0].message.content);
-  }
-  catch(err){
-      res.status(500).send(err)
+app.post("/addReport", async (req, res) => {
+  if (isProcessing) {
+    return res.status(503).send("Server busy. Please try again later.");
   }
 
-  // try{
-  //   const items = await db.promise().query("insert into report (userid,report) values(?,?)", [id,report]);
-  //   res.json(items) 
-  // }
-  // catch(err){
-  //     res.status(500).send(err)
-  // }
+  isProcessing = true;
+
+  const { input, id } = req.body;
   
-})
+  try {
+    const response = await openAi.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: input }]
+    });
+
+    console.log("start");
+    const items = await db
+      .promise()
+      .query("insert into report (userid,report) values(?,?)", [
+        id,
+        response.data.choices[0].message.content
+      ]);
+    console.log("success");
+    res.json(response.data.choices[0].message.content);
+  } catch (err) {
+    res.status(500).send(err);
+  } finally {
+    isProcessing = false;
+  }
+});
+
 
 
 app.listen(5000,()=>{

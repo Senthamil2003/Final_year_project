@@ -7,6 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 export default function Report() {
   const reportRef = useRef(null);
   const { name } = useContext(NameContext);
+  
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   console.log(name);
@@ -22,7 +23,6 @@ export default function Report() {
 
   useEffect(() => {
     
-   
     
     const fetchData = async () => {
       setIsLoading(true);
@@ -32,7 +32,7 @@ export default function Report() {
           input: reportData,
         });
         setData(response.data);
-      } catch (msg) {
+      } catch (msg) { 
         console.log(msg);
       } finally {
         setIsLoading(false);
@@ -40,7 +40,7 @@ export default function Report() {
     }; 
    fetchData();
     
-  }, [id]); 
+  }, []); 
 
   if (isLoading) {
     return (

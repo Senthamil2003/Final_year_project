@@ -66,7 +66,7 @@ export default function SpeechModule() {
      
       setTimeout(() => {
         navigate("/report");
-      }, 3000);
+      }, 7000);
       return (
         <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f2f2f2' }}>
         <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

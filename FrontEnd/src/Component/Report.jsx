@@ -16,9 +16,17 @@ export default function Report() {
       window.print();
     }
   };
-
+  const currentDate = new Date();
+  const date = currentDate.toISOString().slice(0, 10); 
+  const hours = ('0' + currentDate.getHours()).slice(-2); // Extract hours (with leading zero if necessary)
+    const minutes = ('0' + currentDate.getMinutes()).slice(-2); // Extract minutes (with leading zero if necessary)
+    
+    // Combine hours and minutes into time format
+    const time = hours + ':' + minutes;
   const id = localStorage.getItem("id");
-  const reportData = name.join("") + "give the report based on the given conversation for the user";
+  const skill = localStorage.getItem("resume")
+  console.log(localStorage.getItem("resume"))
+  const reportData = name.join("") + "Hey i will provide you an entire conversation between the interviewer and the interviewee, you should assume yourself as the interviewer and analyse the user's answers and provide him feedback for every question and also provide the score for every question. Finally provide an overall score and performance of the candidate, where he needs to improve. Provide response such as you are talking to the interviewee";
 
   useEffect(() => {
     
@@ -30,6 +38,7 @@ export default function Report() {
         const response = await axios.post("http://localhost:5000/addreport", {
           id,
           input: reportData,
+          skill : skill
         });
         setData(response.data);
       } catch (msg) {
@@ -61,9 +70,14 @@ export default function Report() {
   }
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f2f2f2' }}>
-      <div ref={reportRef} style={{ textAlign: 'center', padding: '40px', border: '1px solid #ccc', borderRadius: '10px', maxWidth: '600px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff' }}>
-        <h1 style={{ color: '#007bff', fontSize: '36px', marginBottom: '30px' }}>Report Page</h1>
+    <div style={{ display: 'flex', justifyContent: 'center', textAlign:"center",textJustify:"auto", alignItems: 'center', paddingTop:"2%", backgroundColor: '#f2f2f2' }}>
+      <div ref={reportRef} style={{ textAlign: 'center', padding: '40px', border: '1px solid #ccc', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff', width:'1200px' }}>
+        <h1 style={{ color: '#007bff', fontSize: '36px', marginBottom: '30px' }}>Report </h1>
+        <div>
+          <h6 style={{textAlign:"left", marginLeft:"25px"}}>Date : {date} </h6>
+          <h6 style={{textAlign:"left", marginLeft:"25px"}} >Time : {time} </h6>
+          <h3>Feedback</h3>
+        </div>
         <div style={{ padding: '20px', borderRadius: '10px', marginBottom: '30px', backgroundColor: '#f0f0f0', lineHeight: '1.5' }}>
 
           <p style={{ color: '#666', fontSize: '20px', margin: '5px 0' }}>{data}</p>
@@ -72,7 +86,7 @@ export default function Report() {
         <button style={{ background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '18px', marginRight: '10px' }} onClick={handlePrint}>
           Print Report
         </button>
-        <Link to="/interview"><button style={{ background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '18px' }}>
+        <Link to="/home"><button style={{ background: '#007bff', color: '#fff', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer', transition: 'background 0.3s', fontSize: '18px' }}>
           Go back home
         </button></Link>
       </div>

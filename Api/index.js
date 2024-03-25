@@ -12,6 +12,8 @@ app.use(CORS());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended : true}));
 const { Configuration, OpenAIApi } = require("openai");
+let isProcessing = false;
+
 const openAi = new OpenAIApi(
   new Configuration({
     apiKey: process.env.OPEN_AI_API_KEY,

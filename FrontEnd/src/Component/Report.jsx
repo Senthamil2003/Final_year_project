@@ -27,7 +27,7 @@ export default function Report() {
   const id = localStorage.getItem("id");
   const skill = localStorage.getItem("resume")
   console.log(localStorage.getItem("resume"))
-  const reportData = name.join("") + "Hey i will provide you an entire conversation between the interviewer and the interviewee, you should assume yourself as the interviewer and analyse the user's answers and provide him feedback for every question and also provide the score for every question. Finally provide an overall score and performance of the candidate, where he needs to improve. Provide response such as you are talking to the interviewee";
+  const reportData = name.join("") + "Hey i will provide you an entire conversation between the interviewer and the interviewee, you should assume yourself as the interviewer and analyse the user's answers and provide him feedback for every question and also provide the score for every question of 10. Finally provide an overall score and performance of the candidate, where he needs to improve. Provide response such as you are talking to the interviewee";
 
   useEffect(() => {
     

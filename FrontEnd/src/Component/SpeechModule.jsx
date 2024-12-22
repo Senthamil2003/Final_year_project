@@ -9,8 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { NameContext } from "../App";
 import Spinner from "react-bootstrap/Spinner";
 export default function SpeechModule() {
+
+  // const skill = "Data Structure";
+
+  const skill = localStorage.getItem("resume");
+
   const prompt =
-    "hi i am going to give you the entire conversation i am user and you are the assistant, if you need you can also use the previous conversation as reference.Hey you should act as an interviewer and ask questions on the topics data structures easy level. You should ask only one question at a time and ask the next question only after the user answers the first question dont give answer for the question in the middle of the interview.more importantly dont give the answer as (user:some answer) in middle of interview, it is strictly prohibited.and act more like interviewer by giving some casual terms and opinion(not answer).I will also provide the entire conversation, you can use them as reference to avoid asking same questions, count the number of questions you have asked and the remaining number of questions or to ask questions from the previous answer. You should ask a total of 7 questions,exact seven questions must be asked no extra questions are allowed. and add the question number in the begining. Your first response should be your first interview question and once user responds then i will be giving the conversation again for your reference and using it you can ask further questions.";
+    "hi i am going to give you the entire conversation i am user and you are the assistant, if you need you can also use the previous conversation as reference.Hey you should act as an interviewer and ask questions on the topics "+ skill + " easy level. You should ask only one question at a time and ask the next question only after the user answers the first question dont give answer for the question in the middle of the interview.more importantly dont give the answer as (user:some answer) in middle of interview, it is strictly prohibited.and act more like interviewer by giving some casual terms and opinion(not answer).I will also provide the entire conversation, you can use them as reference to avoid asking same questions, count the number of questions you have asked and the remaining number of questions or to ask questions from the previous answer. You should ask a total of 7 questions,exact seven questions must be asked no extra questions are allowed. and add the question number in the begining. Your first response should be your first interview question and once user responds then i will be giving the conversation again for your reference and using it you can ask further questions.";
   const [data, setData] = useState([]);
   const [count, setCount] = useState(0);
 
@@ -52,8 +57,8 @@ export default function SpeechModule() {
       if (count < 10) {
         speak({ text: response.data.content });
       }
-
-      setData((prev) => [...prev, response.data.content]);
+      console.log(response.data)
+      setData((prev) => [...prev, response.data]);
       setCount((prev) => prev + 2);
       setwrite("");
     } catch (error) {

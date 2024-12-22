@@ -16,12 +16,13 @@ function Login() {
   ).then((response) => {
         console.log(response.data[0][0].role)
          
-      
+        alert("Login successful")
         localStorage.setItem("id",response.data[0][0].id)
         navigate("/home");
       
     }).catch((msg)=>{
       console.log(msg)
+      alert("User Credentials do not match")
      
     })
   }
